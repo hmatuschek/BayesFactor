@@ -1,4 +1,4 @@
-oneWayAOV.Gibbs = function(y,iterations=10000,rscale="medium", progress=TRUE, gibi=NULL, logbf=FALSE, sparse=FALSE){
+oneWayAOV.Gibbs = function(y,iterations=10000,rscale="medium", progress=TRUE, gibi=NULL, logbf=FALSE){
   
   rscale = rpriorValues("allNways","fixed",rscale)
   N = as.integer(colSums(!is.na(y)))
@@ -28,7 +28,7 @@ oneWayAOV.Gibbs = function(y,iterations=10000,rscale="medium", progress=TRUE, gi
     }
   }
   
-  if (sparse) {
+  if (exists("BayesFactor.flags.sparse") & BayesFactor.flags.sparse) {
     output = .Call("sparseGibbsOneWayAnova", y, N, J, I, rscale, iterations,
                    progress, pbFun, new.env(), package="BayesFactor")
   } else { 
