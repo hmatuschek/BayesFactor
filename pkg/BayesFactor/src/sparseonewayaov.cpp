@@ -102,6 +102,7 @@ SEXP sparseGibbsOneWayAnova(SEXP yR, SEXP NR, SEXP JR, SEXP IR, SEXP rscaleR, SE
   std::vector<SEXP> retList; retList.reserve(3);
   retList.push_back(Rcpp::wrap(chains));
   retList.push_back(Rcpp::wrap(cmde));
+  /// POSSIBLE BUG: Returns an empty vector as debug item...
   retList.push_back(Rcpp::wrap(std::vector<SEXP>()));
   return Rcpp::wrap(retList);
 }

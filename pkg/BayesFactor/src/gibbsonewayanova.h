@@ -16,7 +16,7 @@
 #include <Eigen/Eigen>
 #include <Eigen/Sparse>
 
-
+// May be removed as there is one impl. in commom.c, this however is inline.
 inline double LogOnePlusX(double x) {
   if (x <= -1.0) { return std::numeric_limits<double>::quiet_NaN(); }
   if (fabs(x) > 0.375) {
@@ -44,7 +44,10 @@ inline double LogOnePlusX(double x) {
 
 
 /** Implements the one-way-ANOVA gibbs sampler utilizing the sparse linear algebra routines
- * of Eigen. */
+ * of Eigen.
+ *
+ * The random number generator class is given as a template argument to allow for an implementation
+ * that works outside the R universe. */
 template <class RNG>
 class OneWayAnovaGibbs
 {
@@ -126,7 +129,7 @@ public:
     /* Sample sigma^2 */
     double scaleSig2 = _grandSumSq - 2*beta(0)*_grandSum + beta[0]*beta[0]*_sumN;
     double shapeSig2 = (_sumN+_J*1.0)/2;
-    /// @todo Try to vectorize this expression.
+    /// @todo Try to vectorize this expression using array().cast<double>()...
     for (int j=0; j<_J; j++) {
       scaleSig2 += -(_yBar(j)-beta(0))*beta(j+1)*_N(j);
       scaleSig2 += 0.5*(_N(j)+1/g)*beta(j+1)*beta(j+1);
